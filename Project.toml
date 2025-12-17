@@ -1,0 +1,13 @@
+name = "Optimize"
+uuid = "814553bc-2060-4325-8690-3b9cbf11db21"
+authors = ["Zejian Zhuang zejian.zhuang@uv.es"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.11"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
