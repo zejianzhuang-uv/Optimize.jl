@@ -78,6 +78,9 @@ function bisect(f::Function, xa::Real, xb::Real; iter::Int64=1000, xtol=2e-12, r
         end
         i += 1
     end
+    if i >= iter
+        println("iteration reaches its maximum.")
+    end
     xa = (abs(xa) < 1e-6 ? 0e0 : xa) 
     if abs(f(xa)) > 0.1
         return NaN64
