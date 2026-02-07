@@ -144,6 +144,9 @@ function brentq(f::Function, xa::Real, xb::Real; iter::Int64=1000, xtol=2e-12, r
         fcur = f(xcur)
         i += 1
     end
+    if i >= iter
+        println("iteration reaches its maximum.")
+    end
     xcur = (abs(xcur) < 1e-6 ? 0e0 : xcur)
     if abs(f(xcur) ) > 0.1
         return NaN64
