@@ -1,9 +1,13 @@
 name = "Optimize"
 uuid = "814553bc-2060-4325-8690-3b9cbf11db21"
-authors = ["Zejian Zhuang zejian.zhuang@uv.es"]
 version = "1.0.0-DEV"
+authors = ["Zejian Zhuang zejian.zhuang@uv.es"]
+
+[deps]
+FastGaussQuadrature = "442a2c76-b920-505d-bb47-c5924d526838"
 
 [compat]
+FastGaussQuadrature = "1.1.0"
 julia = "1.11"
 
 [extras]
