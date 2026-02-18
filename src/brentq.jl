@@ -25,7 +25,28 @@ function brentqv(f::Function, init_x::Vector{Float64}, n::Int64)
     return solv
 end
 
-
+function brentqv(f::Function, init_x::AbstractRange, n::Int64)
+    x0 = init_x[1]
+    solv = Float64[]
+    for x in init_x[2:end]
+        xx = f(x0) * f(x)
+        if xx < 0
+            sol = brentq(f, x0, x)
+            if isnan(sol) == false
+                push!(solv, sol)
+                if length(solv) == n
+                    break
+                end
+                x0 = x
+            else
+                x0 = x
+            end
+        else
+            continue
+        end
+    end
+    return solv
+end
 
 
 
