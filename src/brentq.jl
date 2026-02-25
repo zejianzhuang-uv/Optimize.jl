@@ -27,23 +27,6 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
 At the top of the loop the situation is the following:
 
@@ -70,7 +53,7 @@ At the top of the loop the situation is the following:
   The second check is that |fa| < |fb|. If this is not the case, we swap
   xa and xb and resort to bisection.
 """
-function brentq(f::Function, xa::Float64, xb::Float64; iter::Int64=1000, xtol=2e-12, rtol=1e-10, ftol=1e-6)::Float64
+function brentq(f::Function, xa::Float64, xb::Float64; iter::Int64=1000, xtol=2e-12, rtol=1e-10, ftol=1e-8)::Float64
     xpre, xcur = xa, xb
     xblk = 0e0
     fpre, fcur, fblk, spre, scur, sbis = 0e0, 0e0, 0e0, 0e0, 0e0, 0e0
