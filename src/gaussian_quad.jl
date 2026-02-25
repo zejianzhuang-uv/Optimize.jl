@@ -3,7 +3,7 @@
 
 import FastGaussQuadrature
 
-function gaussian_quad(fcn::Function, a::Float64, b::Float64; npt::Int64=10)::Union{Float64, ComplexF64}
+function gaussian_quad(fcn::Function, a::Float64, b::Float64; npt::Int64=10)
     a *= 1.0
     b *= 1.0
     EPS = 5e-2
