@@ -1,5 +1,54 @@
 
+using Base.Threads
 
+function find_sign_changes_parallel(f::Function, init_x::AbstractVector{Float64})
+    nthreads = Threads.nthreads()
+    N = length(init_x)
+    chunk_size = cld(N - 1, nthreads)
+    
+    chunks = []
+    for i in 1:nthreads
+        start_idx = (i - 1) * chunk_size + 1
+        end_idx   = min(N, i * chunk_size + 1)
+        if start_idx <= N
+            push!(chunks, @view init_x[start_idx:end_idx])
+        end
+    end
+    
+    tasks = map(chunks) do chunk
+        Threads.@spawn begin
+            intervals = Tuple{Float64, Float64}[]
+            x0 = chunk[1]
+            for x in chunk[2:end]
+                if f(x0) * f(x) < 0
+                    push!(intervals, (x0, x))
+                end
+                x0 = x
+            end
+            intervals
+        end
+    end
+    
+    return vcat([fetch(t) for t in tasks]...)
+end
+
+
+function brentqv_parallel(f::Function, init_x::AbstractVector{Float64}, n::Int64)
+    intervals = find_sign_changes_parallel(f, init_x)
+    
+    results = Float64[]
+    for (a, b) in intervals
+        sol = brentq(f, a, b)
+        if !isnan(sol)
+            push!(results, sol)
+            if length(results) == n
+                break
+            end
+        end
+    end
+    
+    return results
+end
 
 
 function brentqv(f::Function, init_x::AbstractVector{Float64}, n::Int64)
