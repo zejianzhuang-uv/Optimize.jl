@@ -1,6 +1,6 @@
 
 
-function derivative(f::Function, x0::Real; eps_start=1e-4, tol=1e-6, max_iter=20)
+function derivative(f::Function, x0::Union{Float64, ComplexF64}; eps_start=1e-4, tol=1e-6, max_iter=20)
     """
     Numerical derivative with convergence check.
     Returns derivative value. Prints warning if not converged.
