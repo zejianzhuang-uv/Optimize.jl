@@ -29,7 +29,7 @@ function derivative(f::Function, x0::Union{Float64,ComplexF64}; tol=1e-8, max_it
         return NaN64
     end
     scale = 1e12
-    h = eps(typeof(x0)) * scale
+    h = eps() * scale
     deri = (f(x0 + h) - f(x0)) / h
     iter = 1
     while iter < max_iter
