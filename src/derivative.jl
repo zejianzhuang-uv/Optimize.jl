@@ -34,7 +34,7 @@ function derivative(f::Function, x0::Union{Float64,ComplexF64}; tol=1e-8, max_it
     iter = 1
     while iter < max_iter
         scale /= 10
-        h = eps(typeof(x0)) * scale
+        h = eps() * scale
         deri_new = (f(x0 + h) - f(x0)) / h
         error = abs(deri_new - deri)
         deri = deri_new
