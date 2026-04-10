@@ -2,5 +2,6 @@ using Optimize
 using Test
 
 @testset "Optimize.jl" begin
-    # Write your tests here.
+
+    derivative(x -> exp(x), 2.) |> println
 end
