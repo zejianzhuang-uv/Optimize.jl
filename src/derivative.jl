@@ -24,27 +24,34 @@
 #     return deri
 # end
 
-function derivative(f::Function, x0::Union{Float64,ComplexF64}; tol=1e-8, max_iter=50)
-    if isnan(x0)
-        return NaN64
-    end
-    scale = 1e12
-    h = eps() * scale
-    deri = (f(x0 + h) - f(x0)) / h
-    iter = 1
-    while iter < max_iter
-        scale /= 10
-        h = eps() * scale
-        deri_new = (f(x0 + h) - f(x0)) / h
-        error = abs(deri_new - deri)
-        deri = deri_new
-        iter += 1
+# function derivative(f::Function, x0::Union{Float64,ComplexF64}; tol=1e-8, max_iter=50)
+#     if isnan(x0)
+#         return NaN64
+#     end
+#     scale = 1e12
+#     h = eps() * scale
+#     deri = (f(x0 + h) - f(x0)) / h
+#     iter = 1
+#     while iter < max_iter
+#         scale /= 10
+#         h = eps() * scale
+#         deri_new = (f(x0 + h) - f(x0)) / h
+#         error = abs(deri_new - deri)
+#         deri = deri_new
+#         iter += 1
 
-        if error < tol
-            return deri_new
-        end
-    end
+#         if error < tol
+#             return deri_new
+#         end
+#     end
 
-    @warn "Not converged. Last h: $h"
-    return deri
+#     @warn "Not converged. Last h: $h"
+#     return deri
+# end
+
+
+function derivative(f::Function, x0::Union{Float64,ComplexF64})
+    h = eps()*1e10
+    df = (f(x0 + h) - f(x0 - h)) / (2h)
+    return df
 end
