@@ -51,7 +51,7 @@
 
 
 function derivative(f::Function, x0::Union{Float64,ComplexF64})
-    h = eps()*1e10
+    h = 1e-5#eps()*1e10
     df = (f(x0 + h) - f(x0 - h)) / (2h)
     return df
 end
