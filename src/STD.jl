@@ -3,6 +3,7 @@
 
 import Statistics: std
 import Loess: loess, predict
+import DataFrames: DataFrame
 
 function loess_smooth(f::AbstractVector{Float64})
     n = length(f)
@@ -23,5 +24,13 @@ function STD(sample::AbstractArray; kwargs...)
     end
     return loess_smooth(err)
 end
+
+function df_STD(sample::AbstractArray, name::AbstractVector{<:Union{Symbol, String}}; kwargs...)
+    err = STD(sample; kwargs)
+    df = DataFrame(err, name)
+    return df
+end
+
+
 
 
