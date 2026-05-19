@@ -26,7 +26,7 @@ function STD(sample::AbstractArray; kwargs...)
 end
 
 function df_STD(sample::AbstractArray, name::AbstractVector{<:Union{Symbol, String}}; kwargs...)
-    err = STD(sample; kwargs)
+    err = STD(sample; kwargs...)
     df = DataFrame(err, name)
     return df
 end
