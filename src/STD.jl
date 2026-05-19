@@ -17,7 +17,7 @@ end
 
 
 function STD(sample::AbstractArray; kwargs...)
-    err = std(sample, kwargs...)
+    err = std(sample; kwargs...)
     if ndims(sample) == 3
         err = err |> x -> dropdims(x, dims=3)
     end
