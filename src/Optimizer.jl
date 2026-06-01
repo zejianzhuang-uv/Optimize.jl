@@ -1,4 +1,4 @@
-module Optimize
+module Optimizer
 
 # Write your package code here.
     export bisectv, brentqv, gaussian_quad, brentqv_parallel, derivative, STD, df_STD
