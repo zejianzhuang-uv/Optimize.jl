@@ -3,5 +3,5 @@ using Test
 
 @testset "Optimizer.jl" begin
 
-    derivative(x -> exp(x), 2.) |> println
+    @time display(brentqv(sin, -4π:0.1:4π, 3) )
 end

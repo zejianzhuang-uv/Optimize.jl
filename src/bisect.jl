@@ -43,7 +43,7 @@ end
 
 
 # Written by Charles Harris charles.harris@sdl.usu.edu
-function bisect(f::Function, xa::Real, xb::Real; iter::Int64=1000, xtol=2e-12, rtol=1e-10, ftol=1e-6)::Float64
+function bisect(f::Function, xa::Float64, xb::Float64; iter::Int64=1000, xtol=2e-12, rtol=1e-10, ftol=1e-6)::Float64
     # ftol = 1e-6
     i::Int64 = 1
     dm = 0e0
