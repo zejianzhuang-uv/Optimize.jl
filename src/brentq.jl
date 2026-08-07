@@ -228,26 +228,25 @@ end
 #     end
 # end
 
-
 function brentqv(f::Function, init_x::AbstractVector{Float64}, n::Int64)
     x0 = init_x[1]
     fx0 = f(x0)
-    solv = Float64[]
+    solv = Vector{Float64}(undef, n)
+    cnt = 0
     for x in init_x[2:end]
         fx = f(x)
         if signbit(fx0) != signbit(fx)
             sol = brentq(f, x0, x, fx0, fx)
             if !isnan(sol)
-                push!(solv, sol)
-                if length(solv) == n
-                    break
-                end
+                cnt += 1
+                solv[cnt] = sol
+                cnt == n && break
             end
         end
         x0 = x
         fx0 = fx
     end
-    return solv
+    return resize!(solv, cnt)
 end
 
 
@@ -283,6 +282,7 @@ function brentq(f::Function, xa::Float64, xb::Float64, fa::Float64, fb::Float64;
     xblk = 0e0
     fpre, fcur, fblk, spre, scur, sbis = fa, fb, 0e0, 0e0, 0e0, 0e0
     delta, stry, dpre, dblk = 0e0, 0e0, 0e0, 0e0
+
     if abs(fpre) <= ftol
         return xpre
     end
@@ -291,8 +291,8 @@ function brentq(f::Function, xa::Float64, xb::Float64, fa::Float64, fb::Float64;
     end
     if signbit(fpre) == signbit(fcur)
         error("f(xa) and f(xb) have the same sign.")
-        return 0e0
     end
+
     i = 1
     while i < iter
         if (fpre != 0) && (fcur != 0) && signbit(fpre) != signbit(fcur)
@@ -300,7 +300,7 @@ function brentq(f::Function, xa::Float64, xb::Float64, fa::Float64, fb::Float64;
             fblk = fpre
             spre = scur = xcur - xpre
         end
-        if (abs(fblk) < abs(fcur))
+        if abs(fblk) < abs(fcur)
             xpre = xcur
             xcur = xblk
             xblk = xpre
@@ -315,7 +315,7 @@ function brentq(f::Function, xa::Float64, xb::Float64, fa::Float64, fb::Float64;
             break
         end
         if abs(spre) > delta && abs(fcur) < abs(fpre)
-            if (xpre == xblk)
+            if xpre == xblk
                 # interpolate
                 stry = -fcur*(xcur - xpre)/(fcur - fpre)
             else
@@ -325,7 +325,7 @@ function brentq(f::Function, xa::Float64, xb::Float64, fa::Float64, fb::Float64;
                 stry = -fcur*(fblk*dblk - fpre*dpre) / (dblk*dpre*(fblk - fpre))
             end
 
-            if (2*abs(stry) < min(abs(spre), 3*abs(sbis) - delta))
+            if 2*abs(stry) < min(abs(spre), 3*abs(sbis) - delta)
                 spre = scur
                 scur = stry
             else
@@ -338,7 +338,7 @@ function brentq(f::Function, xa::Float64, xb::Float64, fa::Float64, fb::Float64;
         end
         xpre = xcur
         fpre = fcur
-        if (abs(scur) > delta)
+        if abs(scur) > delta
             xcur += scur
         else
             scur += (sbis > 0 ? delta : -delta)
@@ -346,18 +346,16 @@ function brentq(f::Function, xa::Float64, xb::Float64, fa::Float64, fb::Float64;
         fcur = f(xcur)
         i += 1
     end
+
     if i >= iter
         println("iteration reaches its maximum.")
     end
-    xcur = (abs(xcur) < 1e-6 ? 0e0 : xcur)
-    ff = 0e0
+
+    xnew = abs(xcur) < 1e-6 ? 0e0 : xcur
     try
-        ff = abs(f(xcur))
-        if ff > 0.1
-            return NaN64
-        else
-            return xcur
-        end
+        ff = xnew == xcur ? abs(fcur) : abs(f(xnew))
+        xcur = xnew
+        return ff > 0.1 ? NaN64 : xcur
     catch e
         @error "xcur has some problems" e
         return NaN64
