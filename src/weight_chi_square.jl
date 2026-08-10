@@ -28,7 +28,7 @@ Weighted-reduced χ square
 - nₖ: The number of the observables in the scattering process k
 - Ntot: Total number of observables in Nsp scattering processes
 """
-function weight_redχ_square(all_weight_chi2::Float64, Ntot::Int64, nfit::Int64, Nsp::Int64)
+function weight_redχsq(all_weight_chi2::Float64, Ntot::Int64, nfit::Int64, Nsp::Int64)
     chi2 = (Ntot / (Ntot - nfit)) * (1/Nsp) * all_weight_chi2
     return chi2
 end
