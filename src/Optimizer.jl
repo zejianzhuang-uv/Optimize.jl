@@ -13,5 +13,5 @@ include("weight_chi_square.jl")
 
 export bisectv, brentqv, gaussian_quad, derivative, STD, df_STD
 # chi2
-export chi_square, weight_chi_square, weight_redχsq
+export χsq, weightχsq, red_weightχsq
 end
