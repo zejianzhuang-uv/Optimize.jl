@@ -12,12 +12,12 @@ function χsq(yth::AbstractVector{Float64}, yexp::AbstractVector{Float64}, inv_�
     return chi2
 end
 
-function weightχsq(yth::AbstractVector{Float64}, yexp::AbstractVector{Float64}, inv_σ::AbstractVector{Float64}, nk::Int64)
+function weightedχsq(yth::AbstractVector{Float64}, yexp::AbstractVector{Float64}, inv_σ::AbstractVector{Float64}, nk::Int64)
     chi2 = χsq(yth, yexp, inv_σ)
     return chi2 / nk
 end
 
-function weightχsq(yth::AbstractVector{Float64}, yexp::AbstractVector{Float64}, inv_σ::AbstractMatrix{Float64}, nk::Int64)
+function weightedχsq(yth::AbstractVector{Float64}, yexp::AbstractVector{Float64}, inv_σ::AbstractMatrix{Float64}, nk::Int64)
     chi2 = χsq(yth, yexp, inv_σ)
     return chi2 / nk
 end
@@ -28,7 +28,7 @@ Weighted-reduced χ square
 - nₖ: The number of the observables in the scattering process k
 - Ntot: Total number of observables in Nsp scattering processes
 """
-function red_weightχsq(all_weight_chi2::Float64, Ntot::Int64, nfit::Int64, Nsp::Int64)
+function red_weightedχsq(all_weight_chi2::Float64, Ntot::Int64, nfit::Int64, Nsp::Int64)
     chi2 = (Ntot / (Ntot - nfit)) * (1/Nsp) * all_weight_chi2
     return chi2
 end
