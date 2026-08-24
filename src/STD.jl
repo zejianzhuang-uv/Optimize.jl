@@ -11,7 +11,7 @@ function loess_smooth(f::AbstractVector{Float64})
 end
 
 function loess_smooth(f::AbstractVector{Float64}, x::AbstractVector{Float64})
-    predict(loess(x, f), Float64.(1:n))
+    predict(loess(x, f), x)
 end
 
 
