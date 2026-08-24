@@ -24,7 +24,7 @@
 #     return deri
 # end
 
-function derivative(f::Function, x0::Union{Float64,ComplexF64}; tol=1e-8, max_iter=50)
+function derivative(f::Function, x0::Union{Float64,ComplexF64}; ftol=1e-1, max_iter=50)
     if isnan(x0)
         return NaN64
     end
@@ -36,11 +36,11 @@ function derivative(f::Function, x0::Union{Float64,ComplexF64}; tol=1e-8, max_it
         scale /= 10
         h = eps() * scale
         deri_new = (f(x0 + h) - f(x0)) / h
-        error = abs(deri_new - deri)
+        rel_error = abs(deri_new - deri) / (abs(deri_new) + eps())  # 防止除零
         deri = deri_new
         iter += 1
 
-        if error < tol
+        if rel_error < ftol
             return deri_new
         end
     end
